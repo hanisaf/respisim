@@ -1,6 +1,8 @@
 import { Component } from '@angular/core';
 import * as p5 from 'p5';
 
+var x, y;
+
 @Component({
   selector: 'app-root',
   templateUrl: './app.component.html',
@@ -19,14 +21,29 @@ export class AppComponent {
   
   private sketch(p: any) {
     p.setup = () => {
-      p.createCanvas(500, 500);
+      p.createCanvas(720, 400);
+      // Starts in the middle
+      x = p.width / 2;
+      y = p.height;
     };
   
     p.draw = () => {
-      p.background(255);
-      p.fill(0);
-      p.rect(p.width / 2, p.height / 2, 50, 50);
-      p.line(1,1,100,100);
+      p.background(200);
+  
+      // Draw a circle
+      p.stroke(50);
+      p.fill(100);
+      p.ellipse(x, y, 24, 24);
+      
+      // Jiggling randomly on the horizontal axis
+      x = x + p.random(-1, 1);
+      // Moving up at a constant speed
+      y = y - 1;
+      
+      // Reset to the bottom
+      if (y < 0) {
+        y = p.height;
+      }
     };
   }
 
