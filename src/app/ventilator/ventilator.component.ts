@@ -1,6 +1,66 @@
-import { Component, OnInit, Input } from '@angular/core';
-import * as p5 from 'p5';
+import { Component, OnInit, Input } from '@angular/core'; 
+
 var x, y;
+
+var sun = new Image();
+var moon = new Image();
+var earth = new Image();
+function init() {
+  sun.src = 'https://mdn.mozillademos.org/files/1456/Canvas_sun.png';
+  moon.src = 'https://mdn.mozillademos.org/files/1443/Canvas_moon.png';
+  earth.src = 'https://mdn.mozillademos.org/files/1429/Canvas_earth.png';
+  window.requestAnimationFrame(draw);
+}
+
+var reset = false;
+function draw() {
+  var canvas = <HTMLCanvasElement> document.getElementById("canvas");
+  var ctx = canvas.getContext('2d');
+
+  if(!reset) {
+
+    ctx.globalCompositeOperation = 'destination-over';
+    ctx.clearRect(0, 0, 300, 300); // clear canvas
+  
+    ctx.fillStyle = 'rgba(0, 0, 0, 0.4)';
+    ctx.strokeStyle = 'rgba(0, 153, 255, 0.4)';
+    ctx.save();
+    ctx.translate(150, 150);
+  
+  
+    // Earth
+    var time = new Date();
+    var seconds = time.getSeconds();
+    var milliseconds= time.getMilliseconds();
+    // if(reset) {
+    //   seconds = milliseconds = 0;
+    //   reset = false;
+    // }
+    ctx.rotate(((2 * Math.PI) / 60) * seconds + ((2 * Math.PI) / 60000) * milliseconds);
+    ctx.translate(105, 0);
+    ctx.fillRect(0, -12, 50, 24); // Shadow
+    ctx.drawImage(earth, -12, -12);
+  
+    // Moon
+    ctx.save();
+    ctx.rotate(((2 * Math.PI) / 6) * seconds + ((2 * Math.PI) / 6000) * milliseconds);
+    ctx.translate(0, 28.5);
+    ctx.drawImage(moon, -3.5, -3.5);
+    ctx.restore();
+  
+    ctx.restore();
+    
+    ctx.beginPath();
+    ctx.arc(150, 150, 105, 0, Math.PI * 2, false); // Earth orbit
+    ctx.stroke();
+   
+    ctx.drawImage(sun, 0, 0, 300, 300);
+  }
+
+
+  window.requestAnimationFrame(draw);
+}
+
 
 @Component({
   selector: 'app-ventilator',
@@ -14,47 +74,18 @@ export class VentilatorComponent implements OnInit {
 
 static set y(value: number) {
     y = value;
+    reset = !reset;
 }
 
-  private p5;
+
 
   
   ngOnInit() {
-    this.createCanvas();
-  }
-  
-  private createCanvas() {
-    this.p5 = new p5(this.sketch);
-  }
-  
-  private sketch(p: any) {
-    p.setup = () => {
-      //p.parent("canvasContainer");
+    init();
 
-      let canvas = p.createCanvas(500, 500);
-      canvas.parent("canvasContainer");
-      // Starts in the middle
-      x = p.width / 2;
-      y = p.height;
-    };
-  
-    p.draw = () => {
-      p.background(200);
-  
-      // Draw a circle
-      p.stroke(50);
-      p.fill(100);
-      p.ellipse(x, y, 24, 24);
-      
-      // Jiggling randomly on the horizontal axis
-      x = x + p.random(-1, 1);
-      // Moving up at a constant speed
-      y = y - 1;
-      
-      // Reset to the bottom
-      if (y < 0) {
-        y = p.height;
-      }
-    };
   }
+  
+
+  
+
 }
