@@ -1,3 +1,40 @@
-<div>
-  replace with the real deal <a href="https://ccsimmods.firebaseapp.com/">NAFAS</a>
-</div>
+
+
+
+<mat-drawer-container class="example-container">
+  <mat-drawer mode="side" opened>
+    <app-question *ngFor="let i of [1,2,3,4,5,6,7,8,9,10]" [title]="i">
+
+    </app-question>
+  </mat-drawer>
+  <mat-drawer-content>
+
+        <app-ventilator>
+            
+        </app-ventilator>
+
+
+
+  </mat-drawer-content>
+</mat-drawer-container>
+
+<!-- 
+  
+<mat-drawer-container >
+  <mat-drawer mode="side" opened="true" position="end" class="example-container">
+    <mat-card>
+        <app-question *ngFor="let i of [1,2,3,4]" [title]="i">
+
+          </app-question>
+    </mat-card>  
+    
+
+  </mat-drawer>
+  <mat-drawer-content>
+    <div>
+      <app-ventilator></app-ventilator>
+    </div>
+
+    
+  </mat-drawer-content>
+</mat-drawer-container> -->
